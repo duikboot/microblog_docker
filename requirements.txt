@@ -7,7 +7,7 @@ flask
 flask-babel
 flask-login
 flask-mail
-flask-openid
+rauth
 flask-sqlalchemy
 flask-whooshalchemy
 flask-wtf
