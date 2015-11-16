@@ -1,19 +1,25 @@
-from flask import render_template, flash, redirect
-from .forms import LoginForm
+from flask import (render_template, flash, redirect, session, url_for,
+                   request, g)
+from flask.ext.login import (login_user, logout_user, current_user,
+                             login_required)
 
-from app import app, db, models
+from app import app, db, lm, oid
+from .forms import LoginForm
+from .models import User
+
+
+@lm.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    user = models.User.query.get(1)
-
-    posts = user.posts.all()
     return render_template("index.html",
                            title='Home',
-                           user=user,
-                           posts=posts)
+                           user=[],
+                           posts=[])
 
 
 @app.route('/login', methods=['GET', 'POST'])
