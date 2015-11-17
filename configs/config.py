@@ -1,5 +1,7 @@
 import os
 
+from .secrets import *
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -9,7 +11,6 @@ SQLALCHEMY_DATABASE_URI = 'postgresql://{0}:{1}@{2}/{3}'.format(
         "postgres", "", "db", "microblog"
     )
 WTF_CSRF_ENABLED = True
-SECRET_KEY = 'you-will-never-guess'
 
 OPENID_PROVIDERS = [
     {'name': 'Google', 'url': 'https://www.google.com/accounts/o8/id'},
@@ -17,3 +18,4 @@ OPENID_PROVIDERS = [
     {'name': 'AOL', 'url': 'http://openid.aol.com/<username>'},
     {'name': 'Flickr', 'url': 'http://www.flickr.com/<username>'},
     {'name': 'MyOpenID', 'url': 'https://www.myopenid.com'}]
+

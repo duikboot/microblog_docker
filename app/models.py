@@ -1,7 +1,7 @@
 import os
 
 from flask.ext.login import LoginManager, UserMixin
-from config import basedir
+from configs.config import basedir
 
 from app import db, app
 

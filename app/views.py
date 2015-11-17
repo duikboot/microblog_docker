@@ -6,7 +6,7 @@ from flask.ext.login import (login_user, logout_user, current_user,
                              login_required)
 
 from app import app, db, lm
-from .forms import LoginForm
+from .forms import LoginForm, EditProfileForm
 from .models import User
 from .oauth import OAuthSignIn
 
@@ -23,6 +23,7 @@ def before_request():
         g.user.last_seen = datetime.utcnow()
         db.session.add(g.user)
         db.session.commit()
+
 
 @app.route('/logout')
 def logout():
@@ -92,3 +93,22 @@ def user(nickname):
     posts = [{"author": user, "body": "Test"}]
 
     return render_template("user.html", user=user, posts=posts)
+
+
+@app.route('/edit', methods=['GET', 'POST'])
+def edit_profile():
+    form = EditProfileForm()
+
+    if form.validate_on_submit():
+        g.user.nickname = form.nickname.data
+        g.user.about_me = form.about_me.data
+        db.session.add(g.user)
+        db.session.commit()
+        flash("Your changes have been saved.")
+        return redirect(url_for("edit_profile"))
+
+    else:
+        form.nickname.data = g.user.nickname
+        form.about_me.data = g.user.about_me
+
+    return render_template("edit_profile.html", form=form)
