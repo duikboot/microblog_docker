@@ -68,7 +68,7 @@ class FacebookSignIn(OAuthSignIn):
                                             # username, so the email's user
                                             # is used instead
             me.get('email'),
-            None # TODO: No profile_image yet
+            None  # TODO: No profile_image yet
         )
 
 
