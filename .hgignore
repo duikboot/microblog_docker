@@ -12,3 +12,4 @@ tags
 *.orig
 .hsenv*
 .cabal-sandbox*
+configs/secrets.py
