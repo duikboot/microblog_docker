@@ -3,6 +3,9 @@
 
 {% block content %}
   <h1>User: {{ user.nickname }}!</h1>
+  {% if user.email %}
+    <h2>email: {{ user.email }}</h2>
+  {% endif %}
   <hr>
   {% for post in posts %}
   <p>

@@ -34,6 +34,7 @@ class OAuthSignIn(object):
 class FacebookSignIn(OAuthSignIn):
     def __init__(self):
         super(FacebookSignIn, self).__init__('facebook')
+
         self.service = OAuth2Service(
             name='facebook',
             client_id=self.consumer_id,
@@ -53,11 +54,13 @@ class FacebookSignIn(OAuthSignIn):
     def callback(self):
         if 'code' not in request.args:
             return None, None, None
+
         oauth_session = self.service.get_auth_session(
             data={'code': request.args['code'],
                   'grant_type': 'authorization_code',
                   'redirect_uri': self.get_callback_url()}
         )
+
         me = oauth_session.get('me?fields=id,email').json()
         return (
             'facebook$' + me['id'],
@@ -71,6 +74,7 @@ class FacebookSignIn(OAuthSignIn):
 class TwitterSignIn(OAuthSignIn):
     def __init__(self):
         super(TwitterSignIn, self).__init__('twitter')
+
         self.service = OAuth1Service(
             name='twitter',
             consumer_key=self.consumer_id,
@@ -90,13 +94,16 @@ class TwitterSignIn(OAuthSignIn):
 
     def callback(self):
         request_token = session.pop('request_token')
+
         if 'oauth_verifier' not in request.args:
             return None, None, None
+
         oauth_session = self.service.get_auth_session(
             request_token[0],
             request_token[1],
             data={'oauth_verifier': request.args['oauth_verifier']}
         )
+
         me = oauth_session.get('account/verify_credentials.json').json()
         social_id = 'twitter$' + str(me.get('id'))
         username = me.get('screen_name')
