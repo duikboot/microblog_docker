@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import (render_template, flash, redirect, session, url_for,
                    request, g)
 from flask.ext.login import (login_user, logout_user, current_user,
@@ -17,7 +19,10 @@ def load_user(id):
 @app.before_request
 def before_request():
     g.user = current_user
-
+    if g.user.is_authenticated:
+        g.user.last_seen = datetime.utcnow()
+        db.session.add(g.user)
+        db.session.commit()
 
 @app.route('/logout')
 def logout():
@@ -64,14 +69,15 @@ def oauth_callback(provider):
         return redirect(url_for('login'))
 
     oauth = OAuthSignIn.get_provider(provider)
-    social_id, username, email = oauth.callback()
+    social_id, username, email, profile_image = oauth.callback()
     if social_id is None:
         flash('Authentication failed.')
         return redirect(url_for('login'))
 
     user = User.query.filter_by(social_id=social_id).first()
     if not user:
-        user = User(social_id=social_id, nickname=username, email=email)
+        user = User(social_id=social_id, nickname=username, email=email,
+                    profile_image=profile_image)
         db.session.add(user)
         db.session.commit()
     login_user(user, True)

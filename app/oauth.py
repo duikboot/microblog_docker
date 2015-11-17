@@ -67,7 +67,8 @@ class FacebookSignIn(OAuthSignIn):
             me.get('email').split('@')[0],  # Facebook does not provide
                                             # username, so the email's user
                                             # is used instead
-            me.get('email')
+            me.get('email'),
+            None # TODO: No profile_image yet
         )
 
 
@@ -107,4 +108,5 @@ class TwitterSignIn(OAuthSignIn):
         me = oauth_session.get('account/verify_credentials.json').json()
         social_id = 'twitter$' + str(me.get('id'))
         username = me.get('screen_name')
-        return social_id, username, None   # Twitter does not provide email
+        profile_image = me.get('profile_image_url_https')
+        return social_id, username, None, profile_image   # Twitter does not provide email

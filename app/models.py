@@ -12,6 +12,9 @@ class User(UserMixin, db.Model):
     social_id = db.Column(db.String(64), nullable=False, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    profile_image =db.Column(db.String(250))
+    about_me = db.Column(db.String(140))
+    last_seen = db.Column(db.DateTime)
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)

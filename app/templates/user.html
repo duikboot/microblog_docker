@@ -2,14 +2,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>User: {{ user.nickname }}!</h1>
-  {% if user.email %}
-    <h2>email: {{ user.email }}</h2>
-  {% endif %}
+  <table>
+      <tr valign="top">
+          <td><img src="{{ user.profile_image }}"></td>
+          <td><h1>User: {{ user.nickname }}</h1></td>
+                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+                {% if user.last_seen %}<p><i>Last seen on: {{ user.last_seen }}</i></p>{% endif %}
+            </td>
+        {% if user.email %}
+        <td>email: {{ user.email }}</td>
+        {% endif %}
+      </tr>
+  </table>
   <hr>
   {% for post in posts %}
-  <p>
-    {{ post.author.nickname }} says: <b>{{ post.body }}</b>
-  </p>
+    {% include 'post.html' %}
   {% endfor %}
 {% endblock %}
