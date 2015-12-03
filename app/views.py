@@ -6,7 +6,7 @@ from flask.ext.login import (login_user, logout_user, current_user,
                              login_required)
 
 from app import app, db, lm
-from .forms import LoginForm, EditProfileForm
+from .forms import EditProfileForm
 from .models import User
 from .oauth import OAuthSignIn
 
@@ -105,7 +105,7 @@ def edit_profile():
         db.session.add(g.user)
         db.session.commit()
         flash("Your changes have been saved.")
-        return redirect(url_for("edit_profile"))
+        return redirect(url_for("user", nickname=g.user.nickname))
 
     else:
         form.nickname.data = g.user.nickname

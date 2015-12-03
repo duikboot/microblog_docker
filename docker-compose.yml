@@ -10,5 +10,5 @@ web:
 db:
   restart: always
   image: postgres
-  ports:
-    - "5432:5432"
+  # ports:
+  #   - "5432:5432"
