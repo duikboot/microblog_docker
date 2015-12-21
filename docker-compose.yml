@@ -7,8 +7,17 @@ web:
     links:
         - db
 
+# data:
+#   restart: no
+#   image: postgres:latest
+#   volumes:
+#     - /var/lib/postgresql
+#   command: true
+
 db:
-  restart: always
-  image: postgres
+    restart: always
+    image: postgres:latest
+    # volumes_from:
+    #     - data
   # ports:
   #   - "5432:5432"
